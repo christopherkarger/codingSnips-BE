@@ -10,7 +10,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context,
-  playground: true,
 });
 
 mongooseConnect(
