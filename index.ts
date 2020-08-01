@@ -4,7 +4,7 @@ import { connect as mongooseConnect } from "mongoose";
 import { typeDefs } from "./graphql/typeDefs";
 import { resolvers } from "./graphql/resolvers";
 
-// Start Apollo Server1
+// Start Apollo Server
 const server = new ApolloServer({
   cors: true,
   typeDefs,
