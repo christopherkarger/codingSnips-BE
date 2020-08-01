@@ -1,35 +1,23 @@
 import gql from "graphql-tag";
 
 export const typeDefs = gql`
-  type Booking {
-    _id: ID!
-    event: Event!
-    user: User!
-    createdAt: String!
-    updatetAt: String!
-  }
-
-  type Event {
-    _id: ID!
-    title: String!
-    description: String!
-    price: String!
-    date: String!
-    creator: User!
-  }
-
-  input EventInput {
-    title: String!
-    description: String!
-    price: String!
-    date: String!
-  }
-
   type User {
     _id: ID!
     email: String!
     password: String
-    createdEvents: [Event!]
+    createdSnips: [Snips!]
+  }
+
+  type Snips {
+    _id: ID!
+    title: String!
+    text: String!
+    creator: User!
+  }
+
+  input SnipsInput {
+    title: String!
+    text: String!
   }
 
   type AuthData {
@@ -38,22 +26,13 @@ export const typeDefs = gql`
     expiration: Int!
   }
 
-  input UserInput {
-    email: String!
-    password: String!
-  }
-
   type Query {
-    events: [Event!]!
-    bookings: [Booking!]!
     login(email: String!, password: String!): AuthData!
+    snips(snipsId: ID!): [Snips]!
   }
 
   type Mutation {
-    createEvent(eventInput: EventInput!): Event!
-    createUser(userInput: UserInput!): User!
-    bookEvent(eventId: ID!): Booking!
-    cancelEvent(bookingID: ID!): Booking!
-    cancelBooking(eventId: ID!): Booking!
+    createUser(email: String!, password: String!): User!
+    createSnips(snipsInput: SnipsInput): Snips!
   }
 `;

@@ -1,16 +1,13 @@
 import { userResolver } from "./user";
-import { bookingsResolver } from "./bookings";
-import { eventsResolver } from "./events";
+import { snipsResolver } from "./snips";
 
 export const resolvers = {
   Query: {
     ...userResolver.Query,
-    ...bookingsResolver.Query,
-    ...eventsResolver.Query,
+    ...snipsResolver.Query,
   },
   Mutation: {
     ...userResolver.Mutation,
-    ...bookingsResolver.Mutation,
-    ...eventsResolver.Mutation,
+    ...snipsResolver.Mutation,
   },
 };

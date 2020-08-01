@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const eventSchema = new Schema({
+const userSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -10,12 +10,12 @@ const eventSchema = new Schema({
     required: true,
   },
 
-  createdEvents: [
+  createdSnips: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: "Snips",
     },
   ],
 });
 
-export const User = model("User", eventSchema);
+export const User = model("User", userSchema);

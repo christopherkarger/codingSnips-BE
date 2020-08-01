@@ -1,20 +1,12 @@
 import { Schema, model } from "mongoose";
 
-const eventSchema = new Schema({
+const snipsSchema = new Schema({
   title: {
     type: String,
     required: true,
   },
-  description: {
+  text: {
     type: String,
-    required: true,
-  },
-  price: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
     required: true,
   },
   creator: {
@@ -23,4 +15,4 @@ const eventSchema = new Schema({
   },
 });
 
-export const Event = model("Event", eventSchema);
+export const Snips = model("Snips", snipsSchema);
