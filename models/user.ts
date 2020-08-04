@@ -9,11 +9,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-
-  createdSnips: [
+  snips: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Snips",
+      ref: "Snip",
+    },
+  ],
+  snipsCollections: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "SnipsCollection",
     },
   ],
 });

@@ -8,12 +8,12 @@ export const userResolver = {
       const user: any = await User.findOne({ email: args.email });
 
       if (!user) {
-        throw new Error("Authentification failed");
+        throw new Error("Authentication failed");
       }
 
       const pwIsEqual = await compare(args.password, user.password);
       if (!pwIsEqual) {
-        throw new Error("Authentification failed");
+        throw new Error("Authentication failed");
       }
 
       const token = sign(

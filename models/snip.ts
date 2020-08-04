@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const snipsSchema = new Schema({
+const snipSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -9,10 +9,14 @@ const snipsSchema = new Schema({
     type: String,
     required: true,
   },
-  creator: {
+  snipsCollection: {
+    type: Schema.Types.ObjectId,
+    ref: "SnipsCollection",
+  },
+  user: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
 });
 
-export const Snips = model("Snips", snipsSchema);
+export const Snip = model("Snip", snipSchema);

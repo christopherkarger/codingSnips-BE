@@ -5,17 +5,27 @@ export const typeDefs = gql`
     _id: ID!
     email: String!
     password: String
-    createdSnips: [Snips!]
+    snips: [Snip]!
+    snipsCollections: [SnipsCollection]!
   }
 
-  type Snips {
+  type SnipsCollection {
+    _id: ID!
+    title: String!
+    user: User!
+    snips: [Snip]!
+  }
+
+  type Snip {
     _id: ID!
     title: String!
     text: String!
-    creator: User!
+    user: User!
+    snipsCollection: SnipsCollection!
   }
 
-  input SnipsInput {
+  input SnipInput {
+    snipsCollectionId: ID!
     title: String!
     text: String!
   }
@@ -28,11 +38,13 @@ export const typeDefs = gql`
 
   type Query {
     login(email: String!, password: String!): AuthData!
-    snips(snipsId: ID!): [Snips]!
+    snipsCollections: [SnipsCollection]!
+    snips(snipId: ID!): [Snip]!
   }
 
   type Mutation {
     createUser(email: String!, password: String!): User!
-    createSnips(snipsInput: SnipsInput): Snips!
+    createSnipsCollection(title: String!): SnipsCollection!
+    createSnip(snipInput: SnipInput): Snip!
   }
 `;

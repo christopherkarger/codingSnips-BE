@@ -1,13 +1,15 @@
 import { userResolver } from "./user";
-import { snipsResolver } from "./snips";
-
+import { snipResolver } from "./snip";
+import { snipsCollectionResolver } from "./snips-collection";
 export const resolvers = {
   Query: {
     ...userResolver.Query,
-    ...snipsResolver.Query,
+    ...snipResolver.Query,
+    ...snipsCollectionResolver.Query,
   },
   Mutation: {
     ...userResolver.Mutation,
-    ...snipsResolver.Mutation,
+    ...snipResolver.Mutation,
+    ...snipsCollectionResolver.Mutation,
   },
 };
