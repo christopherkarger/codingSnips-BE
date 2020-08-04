@@ -14,7 +14,7 @@ export default ({ req }) => {
   }
   let decodedToken;
   try {
-    decodedToken = verify(token, "secretKey");
+    decodedToken = verify(token, process.env.PW_SECRET);
   } catch (err) {
     return noUser;
   }

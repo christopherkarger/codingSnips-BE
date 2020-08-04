@@ -8,17 +8,21 @@ export const userResolver = {
       const user: any = await User.findOne({ email: args.email });
 
       if (!user) {
-        throw new Error("User not found");
+        throw new Error("Authentification failed");
       }
 
       const pwIsEqual = await compare(args.password, user.password);
       if (!pwIsEqual) {
-        throw new Error("Password is not correct");
+        throw new Error("Authentification failed");
       }
 
-      const token = sign({ userId: user.id, email: user.email }, "secretKey", {
-        expiresIn: "1h",
-      });
+      const token = sign(
+        { userId: user.id, email: user.email },
+        process.env.PW_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
 
       return {
         userId: user.id,
