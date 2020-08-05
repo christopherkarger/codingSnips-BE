@@ -39,7 +39,7 @@ export const typeDefs = gql`
   type Query {
     login(email: String!, password: String!): AuthData!
     snipsCollections: [SnipsCollection]!
-    snips(snipId: ID!): [Snip]!
+    snips: [Snip]!
   }
 
   type Mutation {

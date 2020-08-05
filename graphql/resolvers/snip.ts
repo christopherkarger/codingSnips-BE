@@ -1,6 +1,6 @@
 import { Snip } from "../../models/snip";
 import { User } from "../../models/user";
-import { loadUser, loadSingleSnipsCollection } from "./merge";
+import { loadUser, loadSingleSnipsCollection, loadSnips } from "./merge";
 import { SnipsCollection } from "../../models/snips-collection";
 
 export const snipResolver = {
@@ -10,13 +10,13 @@ export const snipResolver = {
         throw new Error("Authentication failed");
       }
       try {
-        const snips = await Snip.find();
+        const snips = await loadSnips(context.user);
         return snips.map((snip: any) => {
           return {
-            ...snip._doc,
-            user: () => loadUser(snip._doc.creator),
+            ...snip,
+            user: () => loadUser(snip.creator),
             snipsCollection: () =>
-              loadSingleSnipsCollection(snip._doc.snipsCollection),
+              loadSingleSnipsCollection(snip.snipsCollection),
           };
         });
       } catch (err) {
