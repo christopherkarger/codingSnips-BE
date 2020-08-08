@@ -17,7 +17,7 @@ const snipsCollectionsLoader = new DataLoader((snipsIds) => {
 
 export const loadUser = async (userId) => {
   try {
-    const user = await userLoader.load(userId.toString());
+    const user = await userLoader.load(userId);
     return {
       ...user._doc,
       snips: () => snipsLoader.loadMany(user._doc.snips),
@@ -31,9 +31,7 @@ export const loadUser = async (userId) => {
 
 export const loadSingleSnipsCollection = async (collectionId) => {
   try {
-    const singleCollection: any = snipsCollectionsLoader.load(
-      collectionId.toString()
-    );
+    const singleCollection: any = snipsCollectionsLoader.load(collectionId);
     return {
       ...singleCollection._doc,
     };
@@ -44,7 +42,7 @@ export const loadSingleSnipsCollection = async (collectionId) => {
 
 export const loadSnipsCollections = async (userId) => {
   try {
-    const user = await userLoader.load(userId.toString());
+    const user: any = await User.findById(userId);
     const collections: any = await snipsCollectionsLoader.loadMany(
       user.snipsCollections
     );
