@@ -1,5 +1,10 @@
 import { SnipsCollection } from "../../models/snips-collection";
-import { loadUser, loadSnips, loadSnipsCollections } from "./merge";
+import {
+  loadUser,
+  loadSnips,
+  loadSnipsCollections,
+  loadSingleSnipsCollection,
+} from "./merge";
 import { User } from "../../models/user";
 
 export const snipsCollectionResolver = {
@@ -36,7 +41,7 @@ export const snipsCollectionResolver = {
 
         const createdSnipsCollection = {
           ...savedSnipsCollection._doc,
-          user: () => loadUser(savedSnipsCollection._doc.creator),
+          user: () => loadUser(savedSnipsCollection._doc.user),
         };
 
         const userById: any = await User.findById(context.user);
@@ -51,6 +56,16 @@ export const snipsCollectionResolver = {
       } catch (err) {
         throw err;
       }
+    },
+
+    updateSnipsCollectionName: async (parent, args, context) => {
+      const collection: any = await SnipsCollection.findById(args.collectionId);
+      collection.title = args.title;
+      collection.save();
+      return {
+        ...collection._doc,
+        user: () => loadUser(collection._doc.user),
+      };
     },
   },
 };

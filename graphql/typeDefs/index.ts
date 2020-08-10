@@ -45,6 +45,10 @@ export const typeDefs = gql`
   type Mutation {
     createUser(email: String!, password: String!): User!
     createSnipsCollection(title: String!): SnipsCollection!
+    updateSnipsCollectionName(
+      collectionId: String!
+      title: String!
+    ): SnipsCollection!
     createSnip(snipInput: SnipInput): Snip!
   }
 `;
