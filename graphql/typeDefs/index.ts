@@ -39,6 +39,7 @@ export const typeDefs = gql`
   type Query {
     login(email: String!, password: String!): AuthData!
     snipsCollections: [SnipsCollection]!
+    snipsCollection(collectionId: String!): SnipsCollection!
     snips: [Snip]!
   }
 

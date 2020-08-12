@@ -31,7 +31,8 @@ export const loadUser = async (userId) => {
 
 export const loadSingleSnipsCollection = async (collectionId) => {
   try {
-    const singleCollection: any = snipsCollectionsLoader.load(collectionId);
+    const singleCollection: any = await SnipsCollection.findById(collectionId);
+
     return {
       ...singleCollection._doc,
     };
@@ -57,10 +58,9 @@ export const loadSnipsCollections = async (userId) => {
   }
 };
 
-export const loadSnips = async (userId) => {
+export const loadSnips = async (colSnips) => {
   try {
-    const user = await userLoader.load(userId.toString());
-    const snips = await snipsLoader.loadMany(user.snips);
+    const snips = await snipsLoader.loadMany(colSnips);
     return snips.map((snip) => {
       return {
         ...snip._doc,
