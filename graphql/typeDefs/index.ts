@@ -12,8 +12,8 @@ export const typeDefs = gql`
   type SnipsCollection {
     _id: ID!
     title: String!
-    user: User!
-    snips: [Snip]!
+    user: User
+    snips: [Snip]
   }
 
   type Snip {
@@ -50,6 +50,7 @@ export const typeDefs = gql`
       collectionId: String!
       title: String!
     ): SnipsCollection!
-    createSnip(snipInput: SnipInput): Snip!
+    createSnip(snipInput: SnipInput!): Snip!
+    deleteCollection(collectionId: String!): SnipsCollection!
   }
 `;

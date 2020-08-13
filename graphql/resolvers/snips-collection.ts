@@ -35,7 +35,6 @@ export const snipsCollectionResolver = {
         return snipsCollection.map((coll: any) => {
           return {
             ...coll,
-            snips: () => loadSnips(coll.snips),
             user: () => loadUser(coll.user),
           };
         });
@@ -58,14 +57,9 @@ export const snipsCollectionResolver = {
 
         const createdSnipsCollection = {
           ...savedSnipsCollection._doc,
-          user: () => loadUser(savedSnipsCollection._doc.user),
         };
 
         const userById: any = await User.findById(context.user);
-
-        if (!userById) {
-          throw new Error("User does not exits");
-        }
 
         userById.snipsCollections.push(createdSnipsCollection);
         await userById.save();
@@ -76,13 +70,48 @@ export const snipsCollectionResolver = {
     },
 
     updateSnipsCollectionName: async (parent, args, context) => {
-      const collection: any = await SnipsCollection.findById(args.collectionId);
-      collection.title = args.title;
-      collection.save();
-      return {
-        ...collection._doc,
-        user: () => loadUser(collection._doc.user),
-      };
+      if (!context.user) {
+        throw new Error("Authentication failed");
+      }
+      try {
+        const collection: any = await SnipsCollection.findById(
+          args.collectionId
+        );
+        collection.title = args.title;
+        collection.save();
+        return {
+          ...collection._doc,
+        };
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    deleteCollection: async (parent, args, context) => {
+      if (!context.user) {
+        throw new Error("Authentication failed");
+      }
+
+      try {
+        const userById: any = await User.findById(context.user);
+        const indexOfCollection = userById.snipsCollections.indexOf(
+          args.collectionId
+        );
+        userById.snipsCollections.splice(indexOfCollection, 1);
+        await userById.save();
+
+        const collection: any = await SnipsCollection.findById(
+          args.collectionId
+        );
+
+        await collection.deleteOne({ _id: args.collectionId });
+
+        return {
+          ...collection._doc,
+        };
+      } catch (err) {
+        throw err;
+      }
     },
   },
 };
