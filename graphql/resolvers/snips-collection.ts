@@ -9,7 +9,7 @@ import { User } from "../../models/user";
 
 export const snipsCollectionResolver = {
   Query: {
-    snipsCollection: async (parent, args, context) => {
+    snipsCollectionById: async (parent, args, context) => {
       if (!context.user) {
         throw new Error("Authentication failed");
       }
@@ -87,7 +87,7 @@ export const snipsCollectionResolver = {
       }
     },
 
-    deleteCollection: async (parent, args, context) => {
+    deleteSnipsCollection: async (parent, args, context) => {
       if (!context.user) {
         throw new Error("Authentication failed");
       }

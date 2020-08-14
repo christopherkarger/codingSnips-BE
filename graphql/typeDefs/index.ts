@@ -39,7 +39,7 @@ export const typeDefs = gql`
   type Query {
     login(email: String!, password: String!): AuthData!
     snipsCollections: [SnipsCollection]!
-    snipsCollection(collectionId: String!): SnipsCollection!
+    snipsCollectionById(collectionId: String!): SnipsCollection!
     snips: [Snip]!
   }
 
@@ -51,6 +51,6 @@ export const typeDefs = gql`
       title: String!
     ): SnipsCollection!
     createSnip(snipInput: SnipInput!): Snip!
-    deleteCollection(collectionId: String!): SnipsCollection!
+    deleteSnipsCollection(collectionId: String!): SnipsCollection!
   }
 `;
