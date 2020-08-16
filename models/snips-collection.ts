@@ -1,4 +1,11 @@
-import { Schema, model } from "mongoose";
+import { Schema, Document, model } from "mongoose";
+
+export interface ISnipsCollection extends Document {
+  title: string;
+  snips: Schema.Types.ObjectId[];
+  user: Schema.Types.ObjectId[];
+  _doc: any;
+}
 
 const snipsCollectionSchema = new Schema({
   title: {
@@ -17,4 +24,7 @@ const snipsCollectionSchema = new Schema({
   },
 });
 
-export const SnipsCollection = model("SnipsCollection", snipsCollectionSchema);
+export const SnipsCollection = model<ISnipsCollection>(
+  "SnipsCollection",
+  snipsCollectionSchema
+);

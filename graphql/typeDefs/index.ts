@@ -20,12 +20,12 @@ export const typeDefs = gql`
     _id: ID!
     title: String!
     text: String!
-    user: User!
-    snipsCollection: SnipsCollection!
+    user: User
+    snipsCollection: SnipsCollection
   }
 
   input SnipInput {
-    snipsCollectionId: ID!
+    collectionId: ID!
     title: String!
     text: String!
   }

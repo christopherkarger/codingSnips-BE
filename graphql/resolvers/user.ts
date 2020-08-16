@@ -1,11 +1,11 @@
 import { hash, compare } from "bcryptjs";
-import { User } from "../../models/user";
+import { User, IUser } from "../../models/user";
 import { sign } from "jsonwebtoken";
 
 export const userResolver = {
   Query: {
     login: async (parent, args, context) => {
-      const user: any = await User.findOne({ email: args.email });
+      const user: IUser = await User.findOne({ email: args.email });
 
       if (!user) {
         throw new Error("Authentication failed");
@@ -17,7 +17,7 @@ export const userResolver = {
       }
 
       const token = sign(
-        { userId: user.id, email: user.email },
+        { userId: user._id, email: user.email },
         process.env.PW_SECRET,
         {
           expiresIn: "1h",
@@ -25,7 +25,7 @@ export const userResolver = {
       );
 
       return {
-        userId: user.id,
+        userId: user._id,
         token: token,
         expiration: 1,
       };

@@ -1,11 +1,14 @@
-import { SnipsCollection } from "../../models/snips-collection";
+import {
+  SnipsCollection,
+  ISnipsCollection,
+} from "../../models/snips-collection";
 import {
   loadUser,
   loadSnips,
   loadSnipsCollections,
   loadSingleSnipsCollection,
 } from "./merge";
-import { User } from "../../models/user";
+import { User, IUser } from "../../models/user";
 
 export const snipsCollectionResolver = {
   Query: {
@@ -14,11 +17,12 @@ export const snipsCollectionResolver = {
         throw new Error("Authentication failed");
       }
       try {
-        const snipsCollection = await loadSingleSnipsCollection(
+        const snipsCollection: ISnipsCollection = await SnipsCollection.findById(
           args.collectionId
         );
+
         return {
-          ...snipsCollection,
+          ...snipsCollection._doc,
           snips: () => loadSnips(snipsCollection.snips),
         };
       } catch (err) {
@@ -31,11 +35,15 @@ export const snipsCollectionResolver = {
         throw new Error("Authentication failed");
       }
       try {
-        const snipsCollection = await loadSnipsCollections(context.user);
+        const userById: IUser = await User.findById(context.user);
+
+        const snipsCollection: ISnipsCollection[] = await SnipsCollection.find({
+          _id: { $in: userById.snipsCollections },
+        });
+
         return snipsCollection.map((coll: any) => {
           return {
-            ...coll,
-            user: () => loadUser(coll.user),
+            ...coll._doc,
           };
         });
       } catch (err) {
@@ -59,7 +67,7 @@ export const snipsCollectionResolver = {
           ...savedSnipsCollection._doc,
         };
 
-        const userById: any = await User.findById(context.user);
+        const userById: IUser = await User.findById(context.user);
 
         userById.snipsCollections.push(createdSnipsCollection);
         await userById.save();
@@ -93,7 +101,7 @@ export const snipsCollectionResolver = {
       }
 
       try {
-        const userById: any = await User.findById(context.user);
+        const userById: IUser = await User.findById(context.user);
         const indexOfCollection = userById.snipsCollections.indexOf(
           args.collectionId
         );

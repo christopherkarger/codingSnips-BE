@@ -1,5 +1,5 @@
 import { Snip } from "../../models/snip";
-import { User } from "../../models/user";
+import { User, IUser } from "../../models/user";
 import { loadUser, loadSingleSnipsCollection, loadSnips } from "./merge";
 import { SnipsCollection } from "../../models/snips-collection";
 
@@ -10,11 +10,12 @@ export const snipResolver = {
         throw new Error("Authentication failed");
       }
       try {
-        const snips = await loadSnips(context.user);
+        const userById: IUser = await User.findById(context.user);
+        const snips = await Snip.find({ _id: { $in: userById.snips } });
+
         return snips.map((snip: any) => {
           return {
-            ...snip,
-            user: () => loadUser(snip.creator),
+            ...snip._doc,
             snipsCollection: () =>
               loadSingleSnipsCollection(snip.snipsCollection),
           };

@@ -1,4 +1,12 @@
-import { Schema, model } from "mongoose";
+import { Schema, Document, model } from "mongoose";
+
+export interface IUser extends Document {
+  email: string;
+  password?: string;
+  snips: Schema.Types.ObjectId[];
+  snipsCollections: Schema.Types.ObjectId[];
+  _doc: any;
+}
 
 const userSchema = new Schema({
   email: {
@@ -23,4 +31,4 @@ const userSchema = new Schema({
   ],
 });
 
-export const User = model("User", userSchema);
+export const User = model<IUser>("User", userSchema);
