@@ -1,10 +1,12 @@
 import { Schema, Document, model } from "mongoose";
+import { ISnip } from "./snip";
+import { ISnipsCollection } from "./snips-collection";
 
 export interface IUser extends Document {
   email: string;
   password?: string;
-  snips: Schema.Types.ObjectId[];
-  snipsCollections: Schema.Types.ObjectId[];
+  snips: ISnip[];
+  snipsCollections: ISnipsCollection[];
   _doc: any;
 }
 

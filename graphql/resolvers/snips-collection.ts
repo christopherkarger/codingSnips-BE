@@ -2,12 +2,7 @@ import {
   SnipsCollection,
   ISnipsCollection,
 } from "../../models/snips-collection";
-import {
-  loadUser,
-  loadSnips,
-  loadSnipsCollections,
-  loadSingleSnipsCollection,
-} from "./merge";
+import { loadSnips } from "./merge";
 import { User, IUser } from "../../models/user";
 
 export const snipsCollectionResolver = {
@@ -17,7 +12,7 @@ export const snipsCollectionResolver = {
         throw new Error("Authentication failed");
       }
       try {
-        const snipsCollection: ISnipsCollection = await SnipsCollection.findById(
+        const snipsCollection = await SnipsCollection.findById(
           args.collectionId
         );
 
@@ -35,9 +30,9 @@ export const snipsCollectionResolver = {
         throw new Error("Authentication failed");
       }
       try {
-        const userById: IUser = await User.findById(context.user);
+        const userById = await User.findById(context.user);
 
-        const snipsCollection: ISnipsCollection[] = await SnipsCollection.find({
+        const snipsCollection = await SnipsCollection.find({
           _id: { $in: userById.snipsCollections },
         });
 
@@ -61,13 +56,13 @@ export const snipsCollectionResolver = {
           title: args.title,
           user: context.user,
         });
-        const savedSnipsCollection: any = await snipsCollection.save();
+        const savedSnipsCollection = await snipsCollection.save();
 
         const createdSnipsCollection = {
           ...savedSnipsCollection._doc,
         };
 
-        const userById: IUser = await User.findById(context.user);
+        const userById = await User.findById(context.user);
 
         userById.snipsCollections.push(createdSnipsCollection);
         await userById.save();
@@ -82,9 +77,7 @@ export const snipsCollectionResolver = {
         throw new Error("Authentication failed");
       }
       try {
-        const collection: any = await SnipsCollection.findById(
-          args.collectionId
-        );
+        const collection = await SnipsCollection.findById(args.collectionId);
         collection.title = args.title;
         collection.save();
         return {
@@ -108,11 +101,9 @@ export const snipsCollectionResolver = {
         userById.snipsCollections.splice(indexOfCollection, 1);
         await userById.save();
 
-        const collection: any = await SnipsCollection.findById(
-          args.collectionId
-        );
+        const collection = await SnipsCollection.findById(args.collectionId);
 
-        await collection.deleteOne({ _id: args.collectionId });
+        await SnipsCollection.remove({ _id: args.collectionId });
 
         return {
           ...collection._doc,

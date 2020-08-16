@@ -5,6 +5,7 @@ export interface ISnip extends Document {
   text: string;
   snipsCollection: Schema.Types.ObjectId;
   user: Schema.Types.ObjectId;
+  _doc: any;
 }
 
 const snipSchema = new Schema({

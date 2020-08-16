@@ -5,7 +5,7 @@ import { sign } from "jsonwebtoken";
 export const userResolver = {
   Query: {
     login: async (parent, args, context) => {
-      const user: IUser = await User.findOne({ email: args.email });
+      const user = await User.findOne({ email: args.email });
 
       if (!user) {
         throw new Error("Authentication failed");
@@ -49,7 +49,8 @@ export const userResolver = {
           password: pwd,
         });
 
-        const savedUser: any = await user.save();
+        const savedUser = await user.save();
+
         return { ...savedUser._doc, password: null };
       } catch (err) {
         throw err;

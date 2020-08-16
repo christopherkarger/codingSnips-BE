@@ -30,31 +30,31 @@ export const snipResolver = {
       if (!context.user) {
         throw new Error("Authentication failed");
       }
-      const snips = new Snip({
+      const snip = new Snip({
         title: args.snipInput.title,
         text: args.snipInput.text,
         user: context.user,
         snipsCollection: args.snipInput.snipsCollectionId,
       });
       try {
-        const userById: any = await User.findById(context.user);
+        const userById = await User.findById(context.user);
         if (!userById) {
           throw new Error("User does not exits");
         }
-        userById.snips.push(snips);
+        userById.snips.push(snip.id);
         await userById.save();
 
-        const snipCollectionById: any = await SnipsCollection.findById(
-          args.snipInput.snipsCollectionId
+        const snipCollectionById = await SnipsCollection.findById(
+          args.snipInput.collectionId
         );
 
         if (!snipCollectionById) {
           throw new Error("SnipCollection does not exits");
         }
-        snipCollectionById.snips.push(snips);
+        snipCollectionById.snips.push(snip.id);
         await snipCollectionById.save();
 
-        const savedSnip: any = await snips.save();
+        const savedSnip: any = await snip.save();
         return {
           ...savedSnip._doc,
           user: () => loadUser(savedSnip._doc.user),
