@@ -4,6 +4,7 @@ import {
 } from "../../models/snips-collection";
 import { loadSnips } from "./merge";
 import { User, IUser } from "../../models/user";
+import { Snip } from "../../models/snip";
 
 export const snipsCollectionResolver = {
   Query: {
@@ -95,13 +96,20 @@ export const snipsCollectionResolver = {
 
       try {
         const userById: IUser = await User.findById(context.user);
+        const collection = await SnipsCollection.findById(args.collectionId);
         const indexOfCollection = userById.snipsCollections.indexOf(
           args.collectionId
         );
         userById.snipsCollections.splice(indexOfCollection, 1);
-        await userById.save();
 
-        const collection = await SnipsCollection.findById(args.collectionId);
+        const newSnips = userById.snips.filter(
+          (x) => !collection.snips.includes(x)
+        );
+
+        userById.snips = newSnips;
+
+        await userById.save();
+        await Snip.deleteMany({ _id: { $in: collection.snips } });
 
         await SnipsCollection.remove({ _id: args.collectionId });
 

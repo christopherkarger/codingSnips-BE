@@ -5,8 +5,8 @@ import { ISnipsCollection } from "./snips-collection";
 export interface IUser extends Document {
   email: string;
   password?: string;
-  snips: ISnip[];
-  snipsCollections: ISnipsCollection[];
+  snips: Schema.Types.ObjectId[];
+  snipsCollections: Schema.Types.ObjectId[];
   _doc: any;
 }
 
