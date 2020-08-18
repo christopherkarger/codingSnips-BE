@@ -95,7 +95,7 @@ export const snipsCollectionResolver = {
       }
 
       try {
-        const userById: IUser = await User.findById(context.user);
+        const userById = await User.findById(context.user);
         const collection = await SnipsCollection.findById(args.collectionId);
         const indexOfCollection = userById.snipsCollections.indexOf(
           args.collectionId

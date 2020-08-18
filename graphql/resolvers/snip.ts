@@ -30,11 +30,12 @@ export const snipResolver = {
       if (!context.user) {
         throw new Error("Authentication failed");
       }
+
       const snip = new Snip({
         title: args.snipInput.title,
         text: args.snipInput.text,
         user: context.user,
-        snipsCollection: args.snipInput.snipsCollectionId,
+        snipsCollection: args.snipInput.collectionId,
       });
       try {
         const userById = await User.findById(context.user);

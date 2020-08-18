@@ -25,7 +25,7 @@ export const typeDefs = gql`
   }
 
   input SnipInput {
-    collectionId: ID!
+    collectionId: String!
     title: String!
     text: String!
   }
