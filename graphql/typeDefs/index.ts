@@ -41,6 +41,7 @@ export const typeDefs = gql`
     snipsCollections: [SnipsCollection]!
     snipsCollectionById(collectionId: String!): SnipsCollection!
     snips: [Snip]!
+    snipsFromCollection(collectionId: String!): [Snip]!
   }
 
   type Mutation {

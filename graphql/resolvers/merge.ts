@@ -43,13 +43,10 @@ export const loadSingleSnipsCollection = async (collectionId) => {
 
 export const loadSnipsCollection = async (collectionId) => {
   try {
-    const collections: any = await snipsCollectionsLoader.load(collectionId);
-
-    return collections.map((col) => {
-      return {
-        ...col._doc,
-      };
-    });
+    const collections = await snipsCollectionsLoader.load(collectionId);
+    return {
+      ...collections._doc,
+    };
   } catch (err) {
     throw err;
   }
@@ -59,6 +56,7 @@ export const loadSnips = async (colSnips) => {
   try {
     const snips = await snipsLoader.loadMany(colSnips);
     return snips.map((snip) => {
+      console.log(snip);
       return {
         ...snip._doc,
       };

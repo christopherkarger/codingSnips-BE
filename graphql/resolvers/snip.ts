@@ -5,7 +5,10 @@ import {
   loadSingleSnipsCollection,
   loadSnipsCollection,
 } from "./merge";
-import { SnipsCollection } from "../../models/snips-collection";
+import {
+  SnipsCollection,
+  ISnipsCollection,
+} from "../../models/snips-collection";
 
 export const snipResolver = {
   Query: {
@@ -17,7 +20,29 @@ export const snipResolver = {
         const userById: IUser = await User.findById(context.user);
         const snips = await Snip.find({ _id: { $in: userById.snips } });
 
-        return snips.map((snip: any) => {
+        return snips.map((snip) => {
+          return {
+            ...snip._doc,
+            snipsCollection: () => loadSnipsCollection(snip.snipsCollection),
+          };
+        });
+      } catch (err) {
+        throw err;
+      }
+    },
+    snipsFromCollection: async (parent, args, context) => {
+      if (!context.user) {
+        throw new Error("Authentication failed");
+      }
+      try {
+        const snipCollectionById: ISnipsCollection = await SnipsCollection.findById(
+          args.collectionId
+        );
+
+        const snips = await Snip.find({
+          _id: { $in: snipCollectionById.snips },
+        });
+        return snips.map((snip) => {
           return {
             ...snip._doc,
             snipsCollection: () => loadSnipsCollection(snip.snipsCollection),
