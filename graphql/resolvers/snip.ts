@@ -1,6 +1,10 @@
 import { Snip } from "../../models/snip";
 import { User, IUser } from "../../models/user";
-import { loadUser, loadSingleSnipsCollection, loadSnips } from "./merge";
+import {
+  loadUser,
+  loadSingleSnipsCollection,
+  loadSnipsCollection,
+} from "./merge";
 import { SnipsCollection } from "../../models/snips-collection";
 
 export const snipResolver = {
@@ -16,8 +20,7 @@ export const snipResolver = {
         return snips.map((snip: any) => {
           return {
             ...snip._doc,
-            snipsCollection: () =>
-              loadSingleSnipsCollection(snip.snipsCollection),
+            snipsCollection: () => loadSnipsCollection(snip.snipsCollection),
           };
         });
       } catch (err) {
