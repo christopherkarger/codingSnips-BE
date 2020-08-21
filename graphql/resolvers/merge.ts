@@ -56,7 +56,6 @@ export const loadSnips = async (colSnips) => {
   try {
     const snips = await snipsLoader.loadMany(colSnips);
     return snips.map((snip) => {
-      console.log(snip);
       return {
         ...snip._doc,
       };
