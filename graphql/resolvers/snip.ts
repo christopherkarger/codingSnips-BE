@@ -52,6 +52,21 @@ export const snipResolver = {
         throw err;
       }
     },
+
+    snipDetails: async (parent, args, context) => {
+      if (!context.user) {
+        throw new Error("Authentication failed");
+      }
+
+      try {
+        const snip = await Snip.findById(args.snipId);
+        return {
+          ...snip._doc,
+        };
+      } catch (err) {
+        throw err;
+      }
+    },
   },
   Mutation: {
     createSnip: async (parent, args, context) => {
