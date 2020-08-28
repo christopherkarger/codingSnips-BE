@@ -24,8 +24,14 @@ export const typeDefs = gql`
     snipsCollection: SnipsCollection
   }
 
-  input SnipInput {
+  input CreateSnipInput {
     collectionId: String!
+    title: String!
+    text: String!
+  }
+
+  input UpdateSnipInput {
+    snipId: String!
     title: String!
     text: String!
   }
@@ -52,7 +58,8 @@ export const typeDefs = gql`
       collectionId: String!
       title: String!
     ): SnipsCollection!
-    createSnip(snipInput: SnipInput!): Snip!
+    createSnip(snipInput: CreateSnipInput!): Snip!
     deleteSnipsCollection(collectionId: String!): SnipsCollection!
+    updateSnip(snipInput: UpdateSnipInput!): Snip!
   }
 `;
