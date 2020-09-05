@@ -61,5 +61,6 @@ export const typeDefs = gql`
     createSnip(snipInput: CreateSnipInput!): Snip!
     deleteSnipsCollection(collectionId: String!): SnipsCollection!
     updateSnip(snipInput: UpdateSnipInput!): Snip!
+    deleteSnip(snipId: String!): Snip!
   }
 `;

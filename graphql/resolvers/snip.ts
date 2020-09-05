@@ -82,9 +82,6 @@ export const snipResolver = {
       });
       try {
         const userById = await User.findById(context.user);
-        if (!userById) {
-          throw new Error("User does not exits");
-        }
         userById.snips.push(snip.id);
         await userById.save();
 
@@ -119,6 +116,38 @@ export const snipResolver = {
         snip.text = args.snipInput.text;
         snip.title = args.snipInput.title;
         await snip.save();
+
+        return {
+          ...snip._doc,
+        };
+      } catch (err) {
+        throw err;
+      }
+    },
+
+    deleteSnip: async (parent, args, context) => {
+      if (!context.user) {
+        throw new Error("Authentication failed");
+      }
+
+      try {
+        const userById = await User.findById(context.user);
+        const snip = await Snip.findById(args.snipId);
+        const snipsCollection = await SnipsCollection.findById(
+          snip.snipsCollection
+        );
+
+        await snip.remove();
+
+        const indexOfSnipsAtUser = userById.snips.indexOf(args.snipId);
+        userById.snips.splice(indexOfSnipsAtUser, 1);
+        await userById.save();
+
+        const indexOfSnipsAtSnipCollection = snipsCollection.snips.indexOf(
+          args.snipId
+        );
+        snipsCollection.snips.splice(indexOfSnipsAtSnipCollection, 1);
+        await snipsCollection.save();
 
         return {
           ...snip._doc,
