@@ -113,6 +113,9 @@ export const snipResolver = {
 
       try {
         const snip = await Snip.findById(args.snipInput.snipId);
+        if (!snip) {
+          throw new Error("Snip does not exist");
+        }
         snip.text = args.snipInput.text;
         snip.title = args.snipInput.title;
         await snip.save();
@@ -131,8 +134,11 @@ export const snipResolver = {
       }
 
       try {
-        const userById = await User.findById(context.user);
         const snip = await Snip.findById(args.snipId);
+        if (!snip) {
+          throw new Error("Snip does not exist");
+        }
+        const userById = await User.findById(context.user);
         const snipsCollection = await SnipsCollection.findById(
           snip.snipsCollection
         );
@@ -151,6 +157,8 @@ export const snipResolver = {
 
         return {
           ...snip._doc,
+          snipsCollection: () =>
+            loadSingleSnipsCollection(snip._doc.snipsCollection),
         };
       } catch (err) {
         throw err;
