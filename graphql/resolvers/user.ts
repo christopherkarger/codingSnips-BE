@@ -20,7 +20,7 @@ export const userResolver = {
         { userId: user._id, email: user.email },
         process.env.PW_SECRET,
         {
-          expiresIn: "1h",
+          expiresIn: "2h",
         }
       );
 
