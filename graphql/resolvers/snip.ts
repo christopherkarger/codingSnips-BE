@@ -77,6 +77,7 @@ export const snipResolver = {
       const snip = new Snip({
         title: args.snipInput.title,
         text: args.snipInput.text,
+        language: args.snipInput.language,
         user: context.user,
         snipsCollection: args.snipInput.collectionId,
       });
@@ -118,6 +119,7 @@ export const snipResolver = {
         }
         snip.text = args.snipInput.text;
         snip.title = args.snipInput.title;
+        snip.language = args.snipInput.language;
         await snip.save();
 
         return {

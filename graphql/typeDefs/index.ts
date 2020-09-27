@@ -20,6 +20,7 @@ export const typeDefs = gql`
     _id: ID!
     title: String!
     text: String!
+    language: String!
     user: User
     snipsCollection: SnipsCollection
   }
@@ -28,12 +29,14 @@ export const typeDefs = gql`
     collectionId: String!
     title: String!
     text: String!
+    language: String!
   }
 
   input UpdateSnipInput {
     snipId: String!
     title: String!
     text: String!
+    language: String!
   }
 
   type AuthData {
