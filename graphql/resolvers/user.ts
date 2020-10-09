@@ -1,5 +1,5 @@
 import { hash, compare } from "bcryptjs";
-import { User, IUser } from "../../models/user";
+import { User } from "../../models/user";
 import { sign } from "jsonwebtoken";
 
 export const userResolver = {
@@ -27,7 +27,7 @@ export const userResolver = {
       return {
         userId: user._id,
         token: token,
-        expiration: 1,
+        expiration: 2,
       };
     },
   },

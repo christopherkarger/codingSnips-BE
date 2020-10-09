@@ -1,6 +1,4 @@
 import { Schema, Document, model } from "mongoose";
-import { ISnip } from "./snip";
-import { ISnipsCollection } from "./snips-collection";
 
 export interface IUser extends Document {
   email: string;
