@@ -1,6 +1,7 @@
 import { hash, compare } from "bcryptjs";
 import { User } from "../../models/user";
 import { sign } from "jsonwebtoken";
+import { AUTH_FAILED, USER_EXITS } from '../../constants';
 
 export const userResolver = {
   Query: {
@@ -8,12 +9,13 @@ export const userResolver = {
       const user = await User.findOne({ email: args.email });
 
       if (!user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
 
       const pwIsEqual = await compare(args.password, user.password);
+
       if (!pwIsEqual) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
 
       const token = sign(
@@ -39,7 +41,7 @@ export const userResolver = {
         });
 
         if (foundUser) {
-          throw new Error("User already exits");
+          throw new Error(USER_EXITS);
         }
 
         const pwd = await hash(args.password, 12);

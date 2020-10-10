@@ -1,7 +1,7 @@
-const DataLoader = require("dataloader");
 import { Snip } from "../../models/snip";
 import { SnipsCollection } from "../../models/snips-collection";
 import { User, IUser } from "../../models/user";
+const DataLoader = require("dataloader");
 
 const userLoader = new DataLoader((userIds) => {
   return User.find({ _id: { $in: userIds } });

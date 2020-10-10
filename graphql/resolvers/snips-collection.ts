@@ -1,17 +1,19 @@
 import {
   SnipsCollection,
-  ISnipsCollection,
 } from "../../models/snips-collection";
 import { loadSnips } from "./merge";
 import { User, IUser } from "../../models/user";
 import { Snip } from "../../models/snip";
+import { AUTH_FAILED } from "../../constants";
+
 
 export const snipsCollectionResolver = {
   Query: {
     snipsCollectionById: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
+
       try {
         const snipsCollection = await SnipsCollection.findById(
           args.collectionId
@@ -28,8 +30,9 @@ export const snipsCollectionResolver = {
 
     snipsCollections: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
+
       try {
         const userById = await User.findById(context.user);
 
@@ -50,8 +53,9 @@ export const snipsCollectionResolver = {
   Mutation: {
     createSnipsCollection: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
+
       try {
         const snipsCollection = new SnipsCollection({
           title: args.title,
@@ -75,8 +79,9 @@ export const snipsCollectionResolver = {
 
     updateSnipsCollectionName: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
+
       try {
         const collection = await SnipsCollection.findById(args.collectionId);
         collection.title = args.title;
@@ -91,7 +96,7 @@ export const snipsCollectionResolver = {
 
     deleteSnipsCollection: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
 
       try {

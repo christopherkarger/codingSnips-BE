@@ -9,13 +9,15 @@ import {
   SnipsCollection,
   ISnipsCollection,
 } from "../../models/snips-collection";
+import { AUTH_FAILED } from "../../constants";
 
 export const snipResolver = {
   Query: {
     snips: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
+
       try {
         const userById: IUser = await User.findById(context.user);
         const snips = await Snip.find({ _id: { $in: userById.snips } });
@@ -32,8 +34,9 @@ export const snipResolver = {
     },
     snipsFromCollection: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
+
       try {
         const snipCollectionById: ISnipsCollection = await SnipsCollection.findById(
           args.collectionId
@@ -55,7 +58,7 @@ export const snipResolver = {
 
     snipDetails: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
 
       try {
@@ -71,7 +74,7 @@ export const snipResolver = {
   Mutation: {
     createSnip: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
 
       const snip = new Snip({
@@ -109,7 +112,7 @@ export const snipResolver = {
     },
     updateSnip: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
 
       try {
@@ -132,7 +135,7 @@ export const snipResolver = {
 
     deleteSnip: async (parent, args, context) => {
       if (!context.user) {
-        throw new Error("Authentication failed");
+        throw new Error(AUTH_FAILED);
       }
 
       try {
@@ -146,8 +149,8 @@ export const snipResolver = {
         );
 
         await snip.remove();
-
         const indexOfSnipsAtUser = userById.snips.indexOf(args.snipId);
+
         userById.snips.splice(indexOfSnipsAtUser, 1);
         await userById.save();
 
