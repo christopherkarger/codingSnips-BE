@@ -12,6 +12,7 @@ export const typeDefs = gql`
   type SnipsCollection {
     _id: ID!
     title: String!
+    snipsCount: Int!
     user: User
     snips: [Snip]
   }

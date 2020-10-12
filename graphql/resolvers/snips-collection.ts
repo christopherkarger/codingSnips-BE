@@ -33,9 +33,9 @@ export const snipsCollectionResolver = {
         throw new Error(AUTH_FAILED);
       }
 
+
       try {
         const userById = await User.findById(context.user);
-
         const snipsCollection = await SnipsCollection.find({
           _id: { $in: userById.snipsCollections },
         });
@@ -43,6 +43,7 @@ export const snipsCollectionResolver = {
         return snipsCollection.map((coll: any) => {
           return {
             ...coll._doc,
+            snipsCount: coll._doc.snips.length
           };
         });
       } catch (err) {
