@@ -17,6 +17,11 @@ export const typeDefs = gql`
     snips: [Snip]
   }
 
+  type FavouriteSnips {
+    snipsCount: Int!
+    snips: [Snip]!
+  }
+
   type Snip {
     _id: ID!
     title: String!
@@ -54,6 +59,7 @@ export const typeDefs = gql`
     snipsCollections: [SnipsCollection]!
     snipsCollectionById(collectionId: String!): SnipsCollection!
     snips: [Snip]!
+    favouriteSnips: FavouriteSnips!
     snipsFromCollection(collectionId: String!): [Snip]!
     snipDetails(snipId: String!): Snip!
   }

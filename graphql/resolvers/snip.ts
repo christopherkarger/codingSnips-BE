@@ -7,19 +7,41 @@ import {
 } from "./merge";
 import {
   SnipsCollection,
-  ISnipsCollection,
 } from "../../models/snips-collection";
 import { AUTH_FAILED } from "../../constants";
 
 export const snipResolver = {
   Query: {
+    favouriteSnips: async (parent, args, context) => {
+      if (!context.user) {
+        throw new Error(AUTH_FAILED);
+      }
+
+      try {
+        const userById = await User.findById(context.user);
+        const snips = await Snip.find({ _id: { $in: userById.snips } });
+        const favSnips = snips.filter((s) => s.favourite);
+        return {
+          snipsCount: favSnips.length,
+          snips: favSnips.map((snip) => {
+              return {
+                ...snip._doc,
+                snipsCollection: () => loadSnipsCollection(snip.snipsCollection),
+              };
+            })
+        }
+      } catch (err) {
+        throw err;
+      }
+      
+    },
     snips: async (parent, args, context) => {
       if (!context.user) {
         throw new Error(AUTH_FAILED);
       }
 
       try {
-        const userById: IUser = await User.findById(context.user);
+        const userById = await User.findById(context.user);
         const snips = await Snip.find({ _id: { $in: userById.snips } });
 
         return snips.map((snip) => {
@@ -38,7 +60,7 @@ export const snipResolver = {
       }
 
       try {
-        const snipCollectionById: ISnipsCollection = await SnipsCollection.findById(
+        const snipCollectionById = await SnipsCollection.findById(
           args.collectionId
         );
 
