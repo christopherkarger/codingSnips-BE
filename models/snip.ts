@@ -4,6 +4,7 @@ export interface ISnip extends Document {
   title: string;
   text: string;
   language: string;
+  favourite: boolean;
   snipsCollection: Schema.Types.ObjectId;
   user: Schema.Types.ObjectId;
   _doc: any;
@@ -20,6 +21,10 @@ const snipSchema = new Schema({
   },
   language: {
     type: String,
+    required: true,
+  },
+  favourite: {
+    type: Boolean,
     required: true,
   },
   snipsCollection: {

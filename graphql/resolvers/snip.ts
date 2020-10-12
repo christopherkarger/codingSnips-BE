@@ -76,11 +76,11 @@ export const snipResolver = {
       if (!context.user) {
         throw new Error(AUTH_FAILED);
       }
-
       const snip = new Snip({
         title: args.snipInput.title,
         text: args.snipInput.text,
         language: args.snipInput.language,
+        favourite: args.snipInput.favourite,
         user: context.user,
         snipsCollection: args.snipInput.collectionId,
       });
@@ -99,13 +99,35 @@ export const snipResolver = {
         snipCollectionById.snips.push(snip.id);
         await snipCollectionById.save();
 
-        const savedSnip: any = await snip.save();
+        const savedSnip = await snip.save();
         return {
           ...savedSnip._doc,
           user: () => loadUser(savedSnip._doc.user),
           snipsCollection: () =>
             loadSingleSnipsCollection(savedSnip._doc.snipsCollection),
         };
+      } catch (err) {
+        throw err;
+      }
+    },
+    
+    updateSnipFavourite: async (parent, args, context) => {
+      if (!context.user) {
+        throw new Error(AUTH_FAILED);
+      }
+
+      try {
+        const snip = await Snip.findById(args.snipId);
+        snip.favourite = args.favourite;
+        const savedSnip = await snip.save();
+
+        return {
+          ...savedSnip._doc,
+          user: () => loadUser(savedSnip._doc.user),
+          snipsCollection: () =>
+            loadSingleSnipsCollection(savedSnip._doc.snipsCollection),
+        };
+
       } catch (err) {
         throw err;
       }
@@ -123,6 +145,7 @@ export const snipResolver = {
         snip.text = args.snipInput.text;
         snip.title = args.snipInput.title;
         snip.language = args.snipInput.language;
+        snip.favourite = args.snipInput.favourite;
         await snip.save();
 
         return {

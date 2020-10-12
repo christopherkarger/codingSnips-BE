@@ -22,6 +22,7 @@ export const typeDefs = gql`
     title: String!
     text: String!
     language: String!
+    favourite: Boolean!
     user: User
     snipsCollection: SnipsCollection
   }
@@ -31,6 +32,7 @@ export const typeDefs = gql`
     title: String!
     text: String!
     language: String!
+    favourite: Boolean!
   }
 
   input UpdateSnipInput {
@@ -38,6 +40,7 @@ export const typeDefs = gql`
     title: String!
     text: String!
     language: String!
+    favourite: Boolean!
   }
 
   type AuthData {
@@ -66,5 +69,6 @@ export const typeDefs = gql`
     deleteSnipsCollection(collectionId: String!): SnipsCollection!
     updateSnip(snipInput: UpdateSnipInput!): Snip!
     deleteSnip(snipId: String!): Snip!
+    updateSnipFavourite(snipId: String!, favourite: Boolean!): Snip!
   }
 `;
