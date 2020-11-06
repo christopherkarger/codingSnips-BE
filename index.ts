@@ -4,7 +4,7 @@ import { connect as mongooseConnect } from "mongoose";
 import { typeDefs } from "./graphql/typeDefs";
 import { resolvers } from "./graphql/resolvers";
 
-const MONGO_DB_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.0aypw.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
+const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
 
 async function bootstrap() {
   try {
