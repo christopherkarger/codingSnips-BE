@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ping": "node -r dotenv/config ping-mongo.js",
     "start": "ts-node index.ts dotenv/config index.ts",
     "start:dev": "ts-node-dev -r dotenv/config index.ts"
   },
